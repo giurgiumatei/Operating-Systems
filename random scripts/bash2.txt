@@ -1,0 +1,120 @@
+1)
+#!/bin/bash
+
+for user in `cat who.fake | awk '{print $1}'`
+do
+        A=`grep -c "^$user" ps.fake`
+        echo $user $A
+done
+
+2)
+#!/bin/bash
+
+CONT=0
+for FILENAME in `find -name "*.c"`
+do
+        if [ -f $FILENAME ]
+        then
+
+                if [ `cat $FILENAME | wc -l` -gt 500 ]
+                then
+                        echo $FILENAME
+                        ((CONT++))
+                fi
+
+                if [ $CONT == 2 ]
+                then
+                        break
+                fi
+        fi
+done
+
+3)
+#!/bin/bash
+
+for FILENAME in `find -name "*.log"`
+do
+        sort $FILENAME > aux.txt
+        mv aux.txt $FILENAME
+done
+
+4)
+#!/bin/bash
+
+for FILENAME in `find -L`
+do
+        if [ ! -e $FILENAME ]
+        then
+                echo $FILENAME
+        fi
+done
+
+5)
+
+6)
+#!/bin/bash
+
+for FILENAME in `find -perm -ugo=w -type f`
+do
+                ls -l $FILENAME | awk '{print $1 $9}'
+                chmod -w $FILENAME
+                ls -l $FILENAME | awk '{print $1 $9}'
+                chmod +w $FILENAME
+done
+
+7)
+#!/bin/bash
+
+scs="@scs.ubbcluj.ro"
+sir_lung=""
+email=""
+
+for user in `cat $1`
+do
+        email=$user$scs
+        sir_lung+=$email,
+done
+echo ${sir_lung%?}
+
+SAU
+
+#!/bin/bash
+
+scs="@scs.ubbcluj.ro"
+sir_lung=""
+email=""
+nr_lines=`cat $1 | wc -l`
+cont=0
+
+for user in `cat $1`
+do
+        email=$user$scs
+        cont=`expr $cont + 1`
+        if [ $cont != $nr_lines ]
+        then
+                sir_lung+=$email,
+        else
+                sir_lung+=$email
+        fi
+done
+echo $sir_lung
+
+8)
+#!/bin/bash
+
+input=df.fake
+{
+read -r
+while read -r line
+do
+        memory=$(echo $line | sed 's/[M%]//g' | awk '{print $2}')
+        space=$(echo $line | sed 's/[M%]//g' | awk '{print $5}')
+        file=$(echo $line | awk '{print $6}')
+        if [ $memory -lt 1000 ] || [ $space -lt 20 ]
+        then
+                echo $file
+        fi
+done } < "$input"
+
+
+

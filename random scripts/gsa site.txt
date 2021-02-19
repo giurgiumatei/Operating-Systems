@@ -1,0 +1,10 @@
+grep 'economica' last.fake | grep 'Sun' | sort | awk '{print $1}' | uniq
+awk '$7>23 ' last.fake | sort | awk '{print $1}' | uniq | sed '$d'
+grep '^m' passwd.fake | sed 's\:\ \g' | sed 's/[a-z]\{4\}//' | awk '$1%7==0 {print $5" "$6}'
+grep 'root' ps.fake | awk '{print $6}' | sort | uniq
+grep '88:x' passwd.fake | sed 's/:/ /g' | awk '{print $5" "$6}'
+sed 's/:/ /g' passwd.fake | grep ' [2][3][0-9] ' | awk '{print $5" "$6}'
+grep '^t' last.fake | grep 'pts/9' | awk '{print $1}' | sort
+sed 's/[a-zA-Z]//g' passwd.fake | sed 's/[0-9]//g' | sed 's/ //g' | sort | uniq
+sed 's/[^r]//g' passwd.fake | sort | uniq
+awk 'BEGIN {sum=0} {sum+=$2} END {print sum/NR}' ps.fake

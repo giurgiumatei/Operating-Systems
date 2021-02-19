@@ -1,0 +1,113 @@
+sisteme(dupa gradul de partajare a resurselor):
+-monouser multitasking
+-monouser monotasking
+multiuser
+sisteme(dupa interactiuni permise):
+-sisteme seriale(predai loturile si astepti rezultatul)
+-sisteme cu timp partajat(fiecare proces(utilizator) are o cuanta de timp)
+-workstations(calculatoare personale)
+-embedded systems(dedicate unui anumit proces industrial,functionarea unui robot)
+-sisteme portabile(telefoane vechi)
+-sisteme conectate la retea(conectate la net)
+sisteme(dupa organizarea interna ce compun so)
+-sisteme monolitice(colectie de proceduri ce nu pot fi intrerupte)
+-sisteme cu nucleu de interfata hardware(sarcinile de nivel cel mai apropiat hardware
+sunt transformate in niste rutine, BIOS)
+-sisteme cu structura stratificata(nucleul e pe layere)
+-sisteme organizate ca masini virtuale(fiecare proces e un SO)
+
+Spooling-componenta care prelucreaza in hold si in finish
+
+P(s) ocupa o pozitie in semafor, V(s) elibereaza
+la deadlockuri sacrifici procesul cu cea mai putina importanta
+ca sa iti dai seama daca ai deadlockuri faci graful cu procese si resurse si 
+vezi daca ai cicluri
+ca sa eviti alegi o ordine in care folosesti resursele si le blochezi in aceeasi ordine	
+
+Conditii pt aparitia unui deadlock:
+-mutual exclusion condition
+-ocuppy and wait condition
+-non preemption condition
+-circular wait
+
+
+FCFS-procesele sunt servite in ordinea lor cronologica de catre scheduler 
+SJF- procesele sunt  servite in functie de timp(dezavantaj daca nu stii timpul)
+Round-Robin-Fiecare proces are o cuanta de timp si coada circulara
+Dupa prioritatile proceselor
+Deadline scheduling- fiecare proces are un deadline si trebuie aranjate sa-l atinga
+
+
+
+Real :
+single tasking os: la boottime da load la kernel in Ram care va ramane acolo pe tot
+parcursul si restul memoriei va fi folosita de procese, os-ul are o partitie de 
+memorie predefinita in care va da load la program
+
+multi-tasking fixed-partition-absolute os:memoria este impartita pe partitii de marime fixa pt fiecare proces,nu poti rula in paralel 2 procese cu aceeasi partitie
+
+multi-tasking fixed-partition-relocatable: ca la absolute numai ca nu mai sunt adrese
+de memorie hardcodate, fiecarui proces ii se da o locatie pe baza marimii lui 
+
+multi-tasking variable-partition: ii dai procesului cata memorie are nevoie si urm.
+proces continua de unde se termina (problema memory fragmentation)
+
+Virtual Paged:
+Instructiunile programului sunt impartite in zone de marime fixa, numite pagini virtuale.Memoria este impartita pe zone de lungime fixa,numite pagini fizice. Este nevoie de un page table ca sa se stie unde stau page-urile.Fiecare instructiune este o pereche formata din nr paginii virtuale si adresa in cadrul paginii (p,d). Fiecare instructiune in memorie este o pereche formata din nr paginii fizice si adresa in cadrul paginii (f,d). Hardul face translatarea (p,d)->(f,d)
+
+Virtual Segmented:
+Textul unui program poate fi plasat in zone de memorie distincte, fiecare dintre ele continand o bucata de program numita segment. Segmentele sunt de lungimi diferite.
+Avantajul fata alocarii pe partitii este ca se pot crea segmente folosite in comun de mai multe procese si se poate realiza o ft buna protectie a memoriei, in tabela de segmente fiecare avand trecut un drept de acces.
+Virtual Paged&Segmented:
+Fiecare proges are o tabela de segmente iar apoi fiecare segment are o tabela de pagini.
+
+
+Cum alegi la ce pagini dai swap:
+Metoda NRU:
+Fiecare pagina fizica are 2 biti. Bitul R primeste valoarea 0 la incarcare. La fiecare referire a pagini acesta e pus pe 1, iar periodic este pus iarasi pe 0. Bitul M primeste valoarea 0 la incarcare si se modifca la 1 cand se scrie in pagina.Dupa se impart in 4 clase in functie de cum au bitii (00,01,10,11) si cand se alege o pagina victima se va cauta mai intai o pagina de clasa 0, apo1 1 etc.
+
+Metoda FIFO:
+Prima pagina incarcata e prima care va fi sacrificata
+Metoda LRU:
+Cu matrice (complicat)
+
+Alocarea memoriei:
+Cea mai convenabila structura pt regasirea zonelor libere de memorie este linked listul. Un nod contine zona de memorie libera specificandu-i adresa inceputului,lungimea si adresa urm nod.Un nod al acestei liste se numeste control word. Nodul mai poate fi stocat la inceputul zonei de memorie pe care o descrie, si atunci contine numai lungimea si nextul.
+
+Metoda First-Fit:
+Itereaza lista si aloca partitia solicitata in prima zona libera in care incape. Avantaj:Simplitatea Dezavantaj: Fragmentarea
+
+Metoda Best-Fit:
+Gasesti zonele de memorie care lasa dupa alocare cel mai putin spatiu liber.
+Avantaj: Minimizarea Fragmentarii Dezavantaj: Mai multa procesare, Fragmentare Interna Excesiva
+
+Metoda Worst-Fit:
+Opusul la Best-Fit
+Avantaj: Ramane in urma un spatiu liber mai mare in care poate fi pus pe viitor alta partitie Dezavantaj: Timp de cautare mare
+
+Metoda Buddy-System:
+Aloci partitiei solicitate o zona de marime putere a lui 2 in care sa incapa.Daca spre exemplu vrei sa aloci de marime 13 si tu ai liber numai de 64 cel mai apropiat atunci desparti 64 in puteri de a lui 2,adica 16+16+32,ii dai la partitia de marime 13 16 si ramai cu inca 2 partitii "prietene" libere 16 si 32.Cand dai free la aia in care ai pus 13 va verifica daca aia cu 16 e libera si dupa daca aia cu 32 e libera, astfel recontruindu-se block-ul de memorie liber initial.
+Avantaj: Smart memory management and recoalescing memory
+Dezavantaj:Timp de procesare
+
+Caching:
+
+Ca si la hash maps(collisions) (proiectarea directa)(memoria e mai fragmentata)
+Sau fara hashing(dezavantaj slower)(proiectarea asociativa)
+
+Sisteme de fisiere Unix:
+-linkurile intre fisiere creaza aliasuri intre ele(ln -s abc def creezi linkul def la abc) 
+-fisierele se afla pe disk sub forma unui linked list
+
+Inodes:
+-Asa tine Linuxul trackul blocks-urilor unui fisier
+-Un Inod are la inceput o parte cu date de identificare si dupa pointeri catre adrese de data blocks(fiecare de 8 KB)
+-daca fisierul are sub 8 kb ramane tot intr-un data block
+-daca nu, se mai aloca alte blockuri(fiecare de 8 KB) pana cand contin tot fisierul
+-daca trece de 10 blockuri al 11-lea va contine pointer catre un subnod cu pointeri catre adresele unor blocks-uri(indirectare simpla)
+-numarul de adrese va fii determinat de size(block)/size(address)
+-daca fisierul nu incape nici asa, atunci pe pozitia 12 din Inod va contine un pointer catre un subnod, care pe fiecare pozitie va fi un pointer catre un subnod ca la 11(indirectare dubla)
+-daca fisierul nu incape nici asa, atunci pe pozitia 13 din Inod va contine un pointer catre un un subnod,care pe fiecare pozitie va contine un pointer catre un subnod ca la 12(indirectare tripla)
+
+-un director contine o lista de perechi(nume fisier,Inod ID)
+-datele de identificare de la inceputul unui Inod contin:link count,user ID,group ID,size,access time,mod time,inode time,block list,indirect list
